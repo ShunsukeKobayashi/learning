@@ -52,7 +52,7 @@ if __name__ == '__main__':
         test_K = calc_design_matrix(train_x, test_x ,h)
         prediction = test_K.dot(theta)
         error[i] = (prediction.T+-1*test_y).dot((prediction.T + -1*test_y).T)
-    print(np.sum(error))
+    print(np.sum(error)/validation_times)
 
     # create data to visualize the prediction
     X = np.linspace(start=xmin, stop=xmax, num=5000)
