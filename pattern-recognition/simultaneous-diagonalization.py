@@ -10,7 +10,7 @@ def make_contour(mean, cov):
     xx,yy=np.meshgrid(np.linspace(-5,5,1e3),np.linspace(-5,5,1e3))
     xt=xx-mean[0,0]
     yt=yy-mean[0,1]
-    p=1./(2.*np.pi*np.sqrt(np.linalg.det(cov))) * np.exp(-1./2.*(icov[0,0]*xt*xt+(icov[0,1]+icov[1,0])*xt*yt+icov[1,1]*yt*yt))
+    p=1./(2.*np.pi*np.sqrt(LA.det(cov))) * np.exp(-1./2.*(icov[0,0]*xt*xt+(icov[0,1]+icov[1,0])*xt*yt+icov[1,1]*yt*yt))
     plt.contour(xx,yy,p,cmap='hsv',levels=7)
 
 data = loadmat('data2.mat')
