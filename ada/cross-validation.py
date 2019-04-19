@@ -26,18 +26,18 @@ if __name__ == '__main__':
     xmin, xmax = -3, 3
     x, y = generate_sample(xmin=xmin, xmax=xmax, sample_size=sample_size)
 
-    h = 10 # Gauss kernel band-width
-    l = 0.03 # regularization term
+    h = 1 # Gauss kernel band-width
+    l = 30 # regularization term
 
     # S-fold cross-validation
     s = 5
-    validation_times = int(sample_size/s)
-    error = np.zeros(validation_times)
-    for i in range(validation_times):
-        train_x = np.concatenate((x[:s*i],x[s*(i+1):]))
-        train_y = np.concatenate((y[:s*i],y[s*(i+1):]))
-        test_x = x[s*i:s*(i+1)]
-        test_y = y[s*i:s*(i+1)]
+    test_data_size = int(sample_size/s)
+    error = np.zeros(s)
+    for i in range(s):
+        train_x = np.concatenate((x[:test_data_size*i],x[test_data_size*(i+1):]))
+        train_y = np.concatenate((y[:test_data_size*i],y[test_data_size*(i+1):]))
+        test_x = x[test_data_size*i:test_data_size*(i+1)]
+        test_y = y[test_data_size*i:test_data_size*(i+1)]
 
         # calculate design matrix
         k = calc_design_matrix(train_x, train_x, h)
@@ -52,7 +52,7 @@ if __name__ == '__main__':
         test_K = calc_design_matrix(train_x, test_x ,h)
         prediction = test_K.dot(theta)
         error[i] = (prediction.T+-1*test_y).dot((prediction.T + -1*test_y).T)
-    print(np.sum(error)/validation_times)
+    print(np.sum(error)/s)
 
     # create data to visualize the prediction
     X = np.linspace(start=xmin, stop=xmax, num=5000)
