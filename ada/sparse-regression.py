@@ -54,9 +54,9 @@ if __name__ == "__main__":
     K = calc_design_matrix(X, X, h)
     prediction = K.dot(theta)
 
-    # count how theta_i = 0
-    print("theta:",len(theta))
-    print("variable:",np.sum(np.abs(theta)<1e-6))
+    # count how many variables = 0
+    print("all variables:",len(theta))
+    print("zero variables:",np.sum(np.abs(theta)<1e-6))
 
     # visualization
     plt.clf()
