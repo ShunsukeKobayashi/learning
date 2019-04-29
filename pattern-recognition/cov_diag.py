@@ -33,19 +33,15 @@ def recognition(x, mu, sigma, p):
 def classification(cov1, cov2, name):
     w=m1-m2
 
-    # recognition function ここを一般化するところから
-    x0=1./2.*(m1+m2)-1./np.linalg.norm(m1-m2)**2.*np.log(p1/p2)*(m1-m2);
-    l1=(w.T.dot(x1-x0)>0)[-1]
-    l2=(w.T.dot(x2-x0)>0)[-1]
     l1=(recognition(x1, m1, cov1, p1)-recognition(x1, m2, cov2, p2)>0)
     l2=(recognition(x2, m1, cov1, p1)-recognition(x2, m2, cov2, p2)>0)
 
     [xx,yy]=np.meshgrid(np.linspace(-2, 5), np.linspace(-2, 5))
     plt.figure()
     plt.axis('equal')
-    contour1=gausscontour(cov1, m1, xx, yy)
+    contour1=gausscontour(g_cov1, m1, xx, yy)
     plt.contour(xx, yy, contour1, cmap='hsv')
-    contour2=gausscontour(cov2, m2, xx, yy)
+    contour2=gausscontour(g_cov2, m2, xx, yy)
     plt.contour(xx, yy, contour2, cmap='hsv')
     # correct x1
     plt.plot(x1[0,np.where(l1)], x1[1,np.where(l1)], 'bo', ms=3)
@@ -60,11 +56,10 @@ def classification(cov1, cov2, name):
     pp=np.reshape(pp, xx.shape)
     cs=plt.contour(xx, yy, pp, cmap='hsv') # 識別線
     plt.clabel(cs)
-    # plt.savefig(name+'cov_diag.eps')
-    plt.show()
+    plt.savefig(name+'cov_diag.eps')
+    # plt.show()
 
 if __name__ == '__main__':
-    sigma = 1.5
     # variance-covariance matrix
     cov1=np.diag(np.cov(np.hstack([x1,x2])))*np.eye(d)
     cov2=cov1
