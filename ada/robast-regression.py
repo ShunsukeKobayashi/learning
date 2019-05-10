@@ -53,4 +53,5 @@ if __name__ == '__main__':
     plt.clf()
     plt.scatter(x, y, c="green", marker="o")
     plt.plot(X, prediction)
-    plt.show()
+    # plt.show()
+    plt.savefig("robast-regression.png")
