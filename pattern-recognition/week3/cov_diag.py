@@ -1,13 +1,15 @@
 import numpy as np
 import numpy.linalg as LA
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 d=2; n=500
 # mean
-m1=np.array([0.,2.])[:,np.newaxis]
+m1=np.array([0.,3.])[:,np.newaxis]
 m2=np.array([3.,0.])[:,np.newaxis]
 # variance
-g_cov1=np.array([[1.3, 1.2],[1.2, 1.7]])
+g_cov1=np.array([[1.3, 0.6],[0.6, 1.7]])
 g_cov2=np.array([[1.4, -0.18],[-0.18, 1.4]])
 # probability
 p1=0.3
@@ -56,12 +58,12 @@ def classification(cov1, cov2, name):
     pp=np.reshape(pp, xx.shape)
     cs=plt.contour(xx, yy, pp, cmap='hsv') # 識別線
     plt.clabel(cs)
-    plt.savefig(name+'cov_diag.eps')
-    # plt.show()
+    plt.savefig(name+'cov_diag.png')
+    plt.show()
 
 if __name__ == '__main__':
     # variance-covariance matrix
-    cov1=np.diag(np.cov(np.hstack([x1,x2])))*np.eye(d)
+    cov1=np.var(np.hstack([x1,x2]))*np.eye(d)
     cov2=cov1
     classification(cov1, cov2, "1")
     cov1=np.cov(np.hstack([x1,x2]))

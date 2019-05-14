@@ -1,5 +1,7 @@
 import numpy as np
 import numpy.linalg as LA
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import mnread
 
@@ -25,12 +27,12 @@ def classify(data, mean, variance, p):
     sigma = np.empty((mean.shape[0], data.shape[1], data.shape[1]))
     # 1. 標準偏差の２乗
     # for i in range(mean.shape[0]):
-    #     sigma[:] = np.diag(np.cov(data[:,:].T))+alpha*np.eye(data.shape[1])
+    #     sigma[:] = (np.var(data[:,:].T)+alpha)*np.eye(data.shape[1])
     # 2. 共通の共分散行列
-    # for i in range(mean.shape[0]):
-    #     sigma[:] = np.cov(data[:,:].T)+alpha*np.eye(data.shape[1])
+    for i in range(mean.shape[0]):
+        sigma[:] = np.cov(data[:,:].T)+alpha*np.eye(data.shape[1])
     # 3. 任意
-    sigma[:] = variance[:]+alpha*np.eye(data.shape[1])
+    # sigma[:] = variance[:]+alpha*np.eye(data.shape[1])
     recognition = np.empty(mean.shape[0], dtype=float)
     for i in range(data.shape[0]):
         for j in range(mean.shape[0]):
@@ -60,7 +62,7 @@ if __name__ == '__main__':
         plt.axis('off')
         plt.imshow(tstdata[good,:,:],cmap='gray')
         plt.title(estlabel[good])
-    plt.savefig('good.eps')
+    plt.savefig('good.png')
     plt.figure()
     plt.suptitle('bads')
     bads = np.random.permutation(np.where(~(estlabel==tstlabel))[-1])[range(50)]
@@ -69,5 +71,5 @@ if __name__ == '__main__':
         plt.axis('off')
         plt.imshow(tstdata[bad,:,:],cmap='gray')
         plt.title('%s(%s)' % (estlabel[bad], tstlabel[bad]))
-    plt.savefig('bad.eps')
+    plt.savefig('bad.png')
     plt.show()
